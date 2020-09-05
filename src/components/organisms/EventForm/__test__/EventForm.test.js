@@ -1,5 +1,6 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
+import { render, fireEvent, act } from '@testing-library/react'
 import { ProviderMock, mockStore } from '../../../../../__mocks__/providerMock'
 import { EventForm } from '../EventForm'
 import { SubmitSection } from '../EventForm.styles'
@@ -56,6 +57,45 @@ describe('EventForm Organism', () => {
     test('run handleCloseModal', () => {
       component.find(SubmitSection).find(Button).at(0).simulate('click')
       expect(mockStore.dispatch).toHaveBeenCalled()
+    })
+  })
+  describe('handle submit', () => {
+    test('is expeted to run submit function', async () => {
+      const { container } = render(
+        <ProviderMock>
+          <EventForm />
+        </ProviderMock>
+      )
+      const eventNameInput = container.querySelector(
+        "input[name='EventFormName']"
+      )
+      const eventInitDateInput = container.querySelector(
+        "input[name='EventFormInitialDate']"
+      )
+      const eventEndDateInput = container.querySelector(
+        "input[name='EventFormEndDate']"
+      )
+      const submitButton = container.querySelector('button[type="submit"]')
+
+      fireEvent.input(eventNameInput, {
+        target: {
+          value: 'event name'
+        }
+      })
+      fireEvent.input(eventInitDateInput, {
+        target: {
+          value: '2020-09-04'
+        }
+      })
+      fireEvent.input(eventEndDateInput, {
+        target: {
+          value: '2020-09-06'
+        }
+      })
+
+      await act(async () => {
+        fireEvent.submit(submitButton)
+      })
     })
   })
 })

@@ -35,7 +35,9 @@ export function EventForm() {
   return (
     <EventFormStyled>
       <SubmitSection>
-        <Button onClick={handleCloseModal}>{EventFormData.buttonCancel}</Button>
+        <Button type="button" onClick={handleCloseModal}>
+          {EventFormData.buttonCancel}
+        </Button>
         <Button onClick={handleSubmit(onSubmit)}>
           {EventFormData.buttonAdd}
         </Button>
